@@ -231,13 +231,25 @@ func (m *Manager) sendStatusUpdate(ctx context.Context, eventID int, groupJID st
 	lines := []string{"סטטוס נוכחי:", ""}
 	var mentions []string
 
+	responded := make([]db.Participant, 0)
+	nonResponded := make([]db.Participant, 0)
 	for _, p := range participants {
 		if p.Responded && p.RespondedAt != nil {
-			ts := p.RespondedAt.In(israelTZ).Format("15:04")
-			lines = append(lines, fmt.Sprintf("🟢 - @%s שלח.ה תגובה ב-%s '%s'", p.Phone, ts, p.ResponseText))
+			responded = append(responded, p)
 		} else {
-			lines = append(lines, fmt.Sprintf("🟡 - @%s עדיין לא שלח.ה תגובה ⏳", p.Phone))
+			nonResponded = append(nonResponded, p)
 		}
+	}
+
+	// Responded participants first
+	for _, p := range responded {
+		ts := p.RespondedAt.In(israelTZ).Format("15:04")
+		lines = append(lines, fmt.Sprintf("🟢 - @%s שלח.ה תגובה ב-%s '%s'", p.Phone, ts, p.ResponseText))
+		mentions = append(mentions, p.Phone+"@s.whatsapp.net")
+	}
+	// Then non-responded participants
+	for _, p := range nonResponded {
+		lines = append(lines, fmt.Sprintf("🟡 - @%s עדיין לא שלח.ה תגובה ⏳", p.Phone))
 		mentions = append(mentions, p.Phone+"@s.whatsapp.net")
 	}
 
