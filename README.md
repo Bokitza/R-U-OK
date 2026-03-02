@@ -14,7 +14,7 @@ A Go application that monitors WhatsApp emergency groups. When a group admin ask
 4. ⏱️ Every minute, the bot posts a status update showing who responded and who hasn't
 5. 🎉 Once everyone responds, the bot sends a summary and closes the event
 6. 🔁 Starting a new event in the same group replaces the previous one
-
+7. You can stop the event at any time by saying **בוט אפשר לעצור**
 ---
 
 ## 🚀 Setup
