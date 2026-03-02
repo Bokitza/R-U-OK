@@ -124,6 +124,14 @@ func (m *Manager) handleTrigger(groupJID, adminLID, adminPhone string, msgType s
 
 		log.Printf("event %d started in %s with %d participants", eventID, groupJID, len(participants))
 		m.startTicker(eventID, groupJID)
+	} else {
+		evt, err := m.db.GetActiveEvent(ctx, groupJID)
+		if err != nil {
+			log.Printf("failed to get active event: %v", err)
+			return
+		}
+		log.Println("stopping event", evt.ID, groupJID)
+		m.completeEvent(ctx, evt.ID, groupJID)
 	}
 }
 
