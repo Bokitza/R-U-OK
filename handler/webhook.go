@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	maxBodySize    = 1 << 20 // 1 MB
-	maxConcurrent  = 50
-	maxMessageLen  = 24
+	maxBodySize   = 1 << 20 // 1 MB
+	maxConcurrent = 50
+	maxMessageLen = 150
 )
 
 type WebhookHandler struct {
